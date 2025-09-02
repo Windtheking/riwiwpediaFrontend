@@ -121,7 +121,6 @@ main {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: #f8f9fa;
   padding: 20px;
 }
 
@@ -303,6 +302,7 @@ main {
 
 .section.active {
   display: block;
+  justify-content: center;
 }
 
 /* Grid de libros */
