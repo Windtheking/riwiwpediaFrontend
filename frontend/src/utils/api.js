@@ -77,3 +77,5 @@ async function authPost(endpoint, data) {
         throw error;
     }
 }
+
+window.verifyToken = verifyToken;
