@@ -466,8 +466,8 @@ async function loadFavorites() {
         }
         return `
         <div class="book-card">
-            <div class="favorite-badge" title="Favorito">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="#FFD700" stroke="#FFA500" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <div class="favorite-badge" title="Favorito" style="position:absolute;top:15px;right:15px;z-index:2;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="#dc2626" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
             </div>
             <div class="book-cover">
                 <img src="${imageUrl}" alt="${book.title || 'Libro'}" style="object-fit:cover;width:100%;height:100%;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.07);">
@@ -485,8 +485,8 @@ async function loadFavorites() {
                     <button class="btn-download" onclick="downloadBook('${book.book_url}', ${book.id})" title="Descargar">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                     </button>
-                    <button class="btn-favorite" onclick="toggleFavorite(${book.id})" title="Quitar favorito">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <button class="btn-favorite" onclick="removeFavorite(${book.id})" title="Quitar favorito">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                     </button>
                     ${currentUser && currentUser.rol === 'admin' ? `
                         <button class="btn-delete" onclick="deleteBook(${book.id})" title="Eliminar">
@@ -498,6 +498,27 @@ async function loadFavorites() {
         </div>
         `;
     }).join('');
+
+    // Hacer que el botón de quitar favorito actualice la lista sin recargar
+    window.removeFavorite = async function(bookId) {
+        try {
+            const response = await authPost('/books/favorite', { bookId });
+            const data = await response.json();
+            if (data.success) {
+                // Eliminar el libro del DOM directamente
+                const card = document.querySelector(`#favorites-container .book-card button.btn-favorite[onclick*='removeFavorite(${bookId})']`).closest('.book-card');
+                if (card) card.remove();
+                // Si ya no hay favoritos, mostrar mensaje
+                if (document.querySelectorAll('#favorites-container .book-card').length === 0) {
+                    container.innerHTML = '<div class="no-books">No tienes libros favoritos aún</div>';
+                }
+            } else {
+                showModal('Error', data.message || 'Error al actualizar favoritos');
+            }
+        } catch (error) {
+            showModal('Error', 'Error al actualizar favoritos');
+        }
+    }
 }
 
 // Hacer funciones globales
