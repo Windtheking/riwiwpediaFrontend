@@ -505,12 +505,27 @@ async function loadFavorites() {
             const response = await authPost('/books/favorite', { bookId });
             const data = await response.json();
             if (data.success) {
-                // Eliminar el libro del DOM directamente
+                // Eliminar el libro del DOM directamente en favoritos
                 const card = document.querySelector(`#favorites-container .book-card button.btn-favorite[onclick*='removeFavorite(${bookId})']`).closest('.book-card');
                 if (card) card.remove();
                 // Si ya no hay favoritos, mostrar mensaje
                 if (document.querySelectorAll('#favorites-container .book-card').length === 0) {
                     container.innerHTML = '<div class="no-books">No tienes libros favoritos aún</div>';
+                }
+                // Actualizar el corazón en el dashboard sin recargar
+                const dashboardCard = document.querySelector(`#books-container .book-card button.btn-favorite[onclick*='toggleFavorite(${bookId})']`).closest('.book-card');
+                if (dashboardCard) {
+                    const badge = dashboardCard.querySelector('.favorite-badge svg');
+                    if (badge) {
+                        badge.setAttribute('fill', 'none');
+                        badge.setAttribute('stroke', '#bbb');
+                    }
+                    // Cambiar el botón de favorito a estado no favorito
+                    const btn = dashboardCard.querySelector('button.btn-favorite svg');
+                    if (btn) {
+                        btn.setAttribute('fill', 'none');
+                        btn.setAttribute('stroke', '#bbb');
+                    }
                 }
             } else {
                 showModal('Error', data.message || 'Error al actualizar favoritos');
