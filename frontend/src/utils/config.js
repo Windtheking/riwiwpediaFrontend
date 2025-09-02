@@ -5,7 +5,7 @@ const APP_CONFIG = {
         uploadPreset: 'ml_default' 
     },
     API: {
-        baseURL: 'http://localhost:3000/api'
+        baseURL: import.meta.env.VITE_API_BASE_URL || 'https://riwipediabackend.vercel.app/api'
     },
     DEFAULT_IMAGES: {
         bookCover: 'https://via.placeholder.com/200x300/667eea/white?text=Portada',

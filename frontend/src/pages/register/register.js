@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         try {
             // Usar publicPost para registro
-            const response = await publicPost('http://localhost:3000/api/register', {
+            const response = await publicPost('/register', {
                 username: name,
                 email: email,
                 password: password

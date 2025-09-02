@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         try {
             // Usar publicPost en lugar de fetch directo
-            const response = await publicPost('http://localhost:3000/api/login', {
+            const response = await publicPost('/login', {
                 email: email,
                 password: password
             });

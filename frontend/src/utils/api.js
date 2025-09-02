@@ -1,7 +1,8 @@
 // Función para hacer peticiones GET autenticadas
-async function authGet(url) {
+async function authGet(endpoint) {
     try {
         const token = localStorage.getItem('token');
+        const url = `${APP_CONFIG.API.baseURL}${endpoint}`;
         
         const response = await fetch(url, {
             method: 'GET',
@@ -19,9 +20,10 @@ async function authGet(url) {
 }
 
 // Función para hacer peticiones POST autenticadas
-async function authPost(url, data) {
+async function authPost(endpoint, data) {
     try {
         const token = localStorage.getItem('token');
+        const url = `${APP_CONFIG.API.baseURL}${endpoint}`;
         
         const response = await fetch(url, {
             method: 'POST',
@@ -40,8 +42,10 @@ async function authPost(url, data) {
 }
 
 // Función para peticiones públicas (sin token)
-async function publicPost(url, data) {
+async function publicPost(endpoint, data) {
     try {
+        const url = `${APP_CONFIG.API.baseURL}${endpoint}`;
+        
         const response = await fetch(url, {
             method: 'POST',
             headers: {
@@ -63,16 +67,10 @@ async function verifyToken() {
         const token = localStorage.getItem('token');
         if (!token) return false;
 
-        const response = await authGet('http://localhost:3000/api/profile');
+        const response = await authGet('/profile');
         return response.ok;
     } catch (error) {
         console.error('Error verificando token:', error);
         return false;
     }
 }
-
-// Hacer funciones globales
-window.authGet = authGet;
-window.authPost = authPost;
-window.publicPost = publicPost;
-window.verifyToken = verifyToken;

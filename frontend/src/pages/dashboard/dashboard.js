@@ -84,7 +84,7 @@ function setupEventListeners() {
 // Cargar libros desde el backend
 async function loadBooks() {
     try {
-        const response = await authGet('http://localhost:3000/api/books');
+        const response = await authGet('/books');
         const data = await response.json();
         
         if (data.success) {
@@ -270,7 +270,7 @@ async function handleAddBook(e) {
     };
     
     try {
-        const response = await authPost('http://localhost:3000/api/books', bookData);
+        const response = await authPost('/books', bookData);
         const data = await response.json();
         
         if (data.success) {
@@ -290,7 +290,7 @@ async function downloadBook(bookUrl, bookId) {
     if (bookUrl && bookUrl.startsWith('http')) {
         try {
             // Incrementar contador de descargas
-            await authPost('http://localhost:3000/api/books/download', { bookId });
+            await authPost('/books/download', { bookId });
             
             // Abrir en nueva pestaña
             window.open(bookUrl, '_blank');
@@ -308,7 +308,7 @@ async function downloadBook(bookUrl, bookId) {
 
 async function toggleFavorite(bookId) {
     try {
-        const response = await authPost('http://localhost:3000/api/books/favorite', { bookId });
+        const response = await authPost('/books/favorite', { bookId });
         const data = await response.json();
         
         if (data.success) {
@@ -325,7 +325,7 @@ async function deleteBook(bookId) {
     if (!confirm('¿Estás seguro de que quieres eliminar este libro?')) return;
     
         try {
-            const response = await fetch(`http://localhost:3000/api/books/delete`, {
+            const response = await fetch(`${APP_CONFIG.API.baseURL}/books/delete`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
