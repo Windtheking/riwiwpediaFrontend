@@ -486,7 +486,7 @@ async function loadFavorites() {
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                     </button>
                     <button class="btn-favorite" onclick="removeFavorite(${book.id})" title="Quitar favorito">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#dc2626" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                     </button>
                     ${currentUser && currentUser.rol === 'admin' ? `
                         <button class="btn-delete" onclick="deleteBook(${book.id})" title="Eliminar">
@@ -501,6 +501,14 @@ async function loadFavorites() {
 
     // Hacer que el botón de quitar favorito actualice la lista sin recargar
     window.removeFavorite = async function(bookId) {
+                // Actualizar contador de favoritos en dashboard
+                const totalFavorites = document.getElementById('total-favorites');
+                if (totalFavorites) {
+                    const current = parseInt(totalFavorites.textContent, 10);
+                    if (!isNaN(current) && current > 0) {
+                        totalFavorites.textContent = current - 1;
+                    }
+                }
         try {
             const response = await authPost('/books/favorite', { bookId });
             const data = await response.json();
