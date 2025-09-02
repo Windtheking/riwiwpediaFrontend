@@ -244,7 +244,11 @@ function openCloudinaryWidget() {
 
 // Abrir modal de agregar libro
 function openAddBookModal() {
-    document.getElementById('add-book-modal').style.display = 'flex';
+    if (currentUser && currentUser.rol === 'admin') {
+        document.getElementById('add-book-modal').style.display = 'flex';
+    } else {
+        showModal('Error', 'Solo los administradores pueden agregar libros');
+    }
 }
 
 // Cerrar modal de agregar libro
@@ -289,8 +293,10 @@ async function handleAddBook(e) {
 async function downloadBook(bookUrl, bookId) {
     if (bookUrl && bookUrl.startsWith('http')) {
         try {
-            // Incrementar contador de descargas
-            await authPost('/books/download', { bookId });
+            // Solo incrementar contador si el libro tiene ID válido
+            if (bookId) {
+                await authPost('/books/download', { bookId });
+            }
             
             // Abrir en nueva pestaña
             window.open(bookUrl, '_blank');
@@ -298,6 +304,7 @@ async function downloadBook(bookUrl, bookId) {
             // Recargar para actualizar contadores
             await loadBooks();
         } catch (error) {
+            console.error('Error al incrementar descargas:', error);
             // Si falla la actualización, aún así abrir el enlace
             window.open(bookUrl, '_blank');
         }
