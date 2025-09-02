@@ -3,8 +3,16 @@ let allBooks = [];
 let currentBooks = [];
 
 document.addEventListener('DOMContentLoaded', async function() {
+    console.log('Dashboard cargado');
+    
     // Verificar autenticación
     if (!await enforceAuth()) return;
+    
+    // Verificar que Cloudinary está cargado
+    if (typeof cloudinary === 'undefined') {
+        console.warn('Cloudinary no cargado, intentando recargar...');
+        // Podrías cargar el script dinámicamente aquí si es necesario
+    }
     
     // Cargar datos del usuario
     await loadUserData();
@@ -20,6 +28,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // Configurar Cloudinary
     setupCloudinary();
+    
+    console.log('Dashboard completamente inicializado');
 });
 
 // Cargar datos del usuario
@@ -210,35 +220,77 @@ function filterBooks() {
 
 // Configurar Cloudinary
 function setupCloudinary() {
-    window.cloudinaryWidget = cloudinary.createUploadWidget({
-        cloudName: APP_CONFIG.CLOUDINARY.cloudName,
-        uploadPreset: APP_CONFIG.CLOUDINARY.uploadPreset,
-        sources: ['local', 'url'],
-        multiple: false,
-        maxFileSize: 5000000,
-        clientAllowedFormats: ['jpg', 'jpeg', 'png', 'gif', 'webp']
-    }, (error, result) => {
-        if (!error && result && result.event === "success") {
-            const imageUrl = result.info.secure_url;
-            document.getElementById('book-image-url').value = imageUrl;
-            
-            // Mostrar previsualización
-            const previewImg = document.getElementById('preview-img');
-            previewImg.src = imageUrl;
-            document.getElementById('image-preview').style.display = 'block';
-            document.getElementById('cover-file-name').textContent = 'Imagen subida correctamente';
-        } else if (error) {
-            showModal('Error', 'Error al subir la imagen');
+    try {
+        // Verificar que Cloudinary está cargado
+        if (typeof cloudinary === 'undefined') {
+            console.error('Cloudinary no está cargado');
+            showModal('Error', 'El sistema de carga de imágenes no está disponible');
+            return;
         }
-    });
+
+        // Verificar la configuración
+        if (!APP_CONFIG.CLOUDINARY.cloudName || !APP_CONFIG.CLOUDINARY.uploadPreset) {
+            console.error('Configuración de Cloudinary incompleta');
+            return;
+        }
+
+        window.cloudinaryWidget = cloudinary.createUploadWidget({
+            cloudName: APP_CONFIG.CLOUDINARY.cloudName,
+            uploadPreset: APP_CONFIG.CLOUDINARY.uploadPreset,
+            sources: APP_CONFIG.CLOUDINARY.sources,
+            multiple: APP_CONFIG.CLOUDINARY.multiple,
+            maxFileSize: APP_CONFIG.CLOUDINARY.maxFileSize,
+            clientAllowedFormats: APP_CONFIG.CLOUDINARY.clientAllowedFormats,
+            styles: APP_CONFIG.CLOUDINARY.styles,
+            cropping: false, // Desactivar cropping para simplificar
+            showAdvancedOptions: false,
+            showPoweredBy: false,
+            autoMinimize: true
+        }, (error, result) => {
+            if (!error && result && result.event === "success") {
+                console.log('Imagen subida exitosamente:', result.info);
+                
+                const imageUrl = result.info.secure_url;
+                document.getElementById('book-image-url').value = imageUrl;
+                
+                // Mostrar previsualización
+                const previewImg = document.getElementById('preview-img');
+                previewImg.src = imageUrl;
+                document.getElementById('image-preview').style.display = 'block';
+                document.getElementById('cover-file-name').textContent = 'Imagen subida correctamente';
+                
+                showModal('Éxito', 'Imagen subida correctamente');
+            } else if (error) {
+                console.error('Error en Cloudinary:', error);
+                showModal('Error', 'Error al subir la imagen: ' + error.message);
+            }
+        });
+
+        console.log('Cloudinary configurado correctamente');
+
+    } catch (error) {
+        console.error('Error al configurar Cloudinary:', error);
+        showModal('Error', 'Error al configurar el sistema de imágenes');
+    }
 }
 
 // Abrir widget de Cloudinary
 function openCloudinaryWidget() {
-    if (window.cloudinaryWidget) {
-        window.cloudinaryWidget.open();
-    } else {
-        showModal('Error', 'El sistema de carga de imágenes no está disponible');
+    try {
+        if (window.cloudinaryWidget) {
+            window.cloudinaryWidget.open();
+        } else {
+            // Intentar reconfigurar si no está disponible
+            setupCloudinary();
+            if (window.cloudinaryWidget) {
+                setTimeout(() => window.cloudinaryWidget.open(), 500);
+            } else {
+                showModal('Error', 'El sistema de carga de imágenes no está disponible');
+            }
+        }
+    } catch (error) {
+        console.error('Error al abrir Cloudinary:', error);
+        showModal('Error', 'No se pudo abrir el selector de imágenes');
     }
 }
 
@@ -264,28 +316,52 @@ function closeAddBookModal() {
 async function handleAddBook(e) {
     e.preventDefault();
     
+    // Verificar que el usuario es admin
+    if (!currentUser || currentUser.rol !== 'admin') {
+        showModal('Error', 'No tienes permisos para agregar libros');
+        return;
+    }
+    
     const bookData = {
         title: document.getElementById('book-title').value,
         author_name: document.getElementById('book-author').value,
         category_name: document.getElementById('book-category').value,
         book_language: document.getElementById('book-language').value,
         book_url: document.getElementById('book-url').value,
-        portrait_url: document.getElementById('book-image-url').value || APP_CONFIG.DEFAULT_IMAGES.bookCover
+        portrait_url: document.getElementById('book-image-url').value
     };
     
+    // Validación básica
+    if (!bookData.title || !bookData.author_name || !bookData.category_name || !bookData.book_url) {
+        showModal('Error', 'Por favor completa todos los campos obligatorios');
+        return;
+    }
+    
+    // Si no hay imagen, usar una por defecto
+    if (!bookData.portrait_url) {
+        bookData.portrait_url = 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&h=600&fit=crop';
+    }
+    
     try {
+        console.log('Enviando datos:', bookData);
         const response = await authPost('/books', bookData);
+        
+        if (!response.ok) {
+            throw new Error(`Error HTTP: ${response.status}`);
+        }
+        
         const data = await response.json();
         
         if (data.success) {
             showModal('Éxito', 'Libro agregado correctamente');
             closeAddBookModal();
-            await loadBooks(); // Recargar libros
+            await loadBooks();
         } else {
             showModal('Error', data.message || 'Error al agregar el libro');
         }
     } catch (error) {
-        showModal('Error', 'Error al agregar el libro');
+        console.error('Error al agregar libro:', error);
+        showModal('Error', 'No se pudo agregar el libro. Verifica la consola para más detalles.');
     }
 }
 
