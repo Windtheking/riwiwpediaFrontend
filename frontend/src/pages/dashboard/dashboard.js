@@ -39,7 +39,7 @@ async function loadUserData() {
         currentUser = user;
         
         // Mostrar info en header
-        document.getElementById('user-email').textContent = user.username;
+        document.getElementById('user-email').textContent = user.email;
         
         // Mostrar info en perfil
         document.getElementById('profile-email').textContent = user.email;
@@ -398,9 +398,14 @@ async function toggleFavorite(bookId) {
     try {
         const response = await authPost('/books/favorite', { bookId });
         const data = await response.json();
-        
         if (data.success) {
-            await loadBooks(); // Recargar libros
+            // Si estamos en la pantalla de favoritos, recargar solo favoritos
+            const favoritesSection = document.getElementById('favorites-section');
+            if (favoritesSection && favoritesSection.classList.contains('active')) {
+                await loadFavorites();
+            } else {
+                await loadBooks();
+            }
         } else {
             showModal('Error', data.message || 'Error al actualizar favoritos');
         }
@@ -454,43 +459,45 @@ async function loadFavorites() {
         return;
     }
     
-    // Crear un contenedor temporal para renderizar
-    const tempContainer = document.createElement('div');
-    tempContainer.innerHTML = favorites.map(book => {
+    container.innerHTML = favorites.map(book => {
         let imageUrl = APP_CONFIG.DEFAULT_IMAGES.bookCover;
         if (book.portrait_url && book.portrait_url.startsWith('http')) {
             imageUrl = book.portrait_url;
         }
-        
         return `
         <div class="book-card">
-            ${book.is_favorite ? '<div class="favorite-badge">⭐</div>' : ''}
+            <div class="favorite-badge" title="Favorito">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="#FFD700" stroke="#FFA500" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
             <div class="book-cover">
-                <img src="${imageUrl}" alt="${book.title || 'Libro'}">
+                <img src="${imageUrl}" alt="${book.title || 'Libro'}" style="object-fit:cover;width:100%;height:100%;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.07);">
             </div>
             <div class="book-info">
                 <h3>${book.title || 'Sin título'}</h3>
                 <p class="book-author">Por: ${book.author_name || 'Autor desconocido'}</p>
                 <span class="book-category">${book.category_name || 'Sin categoría'}</span>
                 <p class="book-language">Idioma: ${book.book_language || 'No especificado'}</p>
-                <p class="book-downloads">📥 ${book.download_count || 0} descargas</p>
+                <p class="book-downloads">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    ${book.download_count || 0} descargas
+                </p>
                 <div class="book-actions">
-                    <button class="btn-download" onclick="downloadBook('${book.book_url}', ${book.id})">
-                        📥 Descargar
+                    <button class="btn-download" onclick="downloadBook('${book.book_url}', ${book.id})" title="Descargar">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                     </button>
-                    <button class="btn-favorite" onclick="toggleFavorite(${book.id})">
-                        ❤️ Quitar Favorito
+                    <button class="btn-favorite" onclick="toggleFavorite(${book.id})" title="Quitar favorito">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                     </button>
                     ${currentUser && currentUser.rol === 'admin' ? `
-                        <button class="btn-delete" onclick="deleteBook(${book.id})">🗑️ Eliminar</button>
+                        <button class="btn-delete" onclick="deleteBook(${book.id})" title="Eliminar">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m5 0V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></svg>
+                        </button>
                     ` : ''}
                 </div>
             </div>
         </div>
         `;
     }).join('');
-    
-    container.innerHTML = tempContainer.innerHTML;
 }
 
 // Hacer funciones globales
