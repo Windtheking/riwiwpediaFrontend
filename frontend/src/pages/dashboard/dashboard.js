@@ -405,23 +405,37 @@ async function toggleFavorite(bookId) {
 }
 
 async function deleteBook(bookId) {
-    if (!confirm('¿Estás seguro de que quieres eliminar este libro?')) return;
+    if (!confirm('¿Estás seguro de que quieres eliminar este libro? Esta acción no se puede deshacer.')) {
+        return;
+    }
+
+    console.log('Intentando eliminar libro ID:', bookId);
+    
     try {
-        const response = await fetch(`${APP_CONFIG.API.baseURL}/books/delete/${bookId}`, {
+        const response = await fetch(`${APP_CONFIG.API.baseURL}/books/delete`, {
             method: 'DELETE',
             headers: {
+                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
+            },
+            body: JSON.stringify({ bookId: bookId })
         });
+
+        console.log('Respuesta del servidor:', response.status, response.statusText);
+
         const data = await response.json();
+        console.log('Datos de respuesta:', data);
+
         if (data.success) {
             showModal('Éxito', 'Libro eliminado correctamente');
-            await loadBooks(); // Recargar libros
+            // Recargar los libros después de eliminar
+            await loadBooks();
         } else {
             showModal('Error', data.message || 'Error al eliminar el libro');
         }
     } catch (error) {
-        showModal('Error', 'Error al eliminar el libro');
+        console.error('Error completo al eliminar:', error);
+        showModal('Error', 'No se pudo eliminar el libro: ' + error.message);
     }
 }
 
