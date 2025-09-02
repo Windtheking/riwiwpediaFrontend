@@ -127,9 +127,9 @@ function renderBooks(booksArray) {
         }
         return `
         <div class="book-card">
-            ${book.is_favorite ? `<div class="favorite-badge" title="Favorito">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFA500" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-            </div>` : ''}
+            <div class="favorite-badge" title="Favorito" style="position:absolute;top:15px;right:15px;z-index:2;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="${book.is_favorite ? '#dc2626' : 'none'}" stroke="${book.is_favorite ? '#dc2626' : '#bbb'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            </div>
             <div class="book-cover">
                 <img src="${imageUrl}" alt="${book.title || 'Libro'}" style="object-fit:cover;width:100%;height:100%;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.07);">
             </div>
@@ -147,7 +147,7 @@ function renderBooks(booksArray) {
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                     </button>
                     <button class="btn-favorite" onclick="toggleFavorite(${book.id})" title="${book.is_favorite ? 'Quitar favorito' : 'Agregar favorito'}">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="${book.is_favorite ? '#dc2626' : 'none'}" stroke="${book.is_favorite ? '#dc2626' : '#bbb'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                     </button>
                     ${currentUser && currentUser.rol === 'admin' ? `
                         <button class="btn-delete" onclick="deleteBook(${book.id})" title="Eliminar">
