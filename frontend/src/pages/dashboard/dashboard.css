@@ -250,7 +250,7 @@ main {
 }
 
 .categories-filter select {
-  width: 126px;
+  width: auto;
   height: 33px;
   border-radius: 8px;
   border: 1px solid #ddd;
@@ -259,7 +259,7 @@ main {
 }
 
 .sort select {
-  width: 126px;
+  width: auto;
   height: 33px;
   border-radius: 8px;
   border: 1px solid #ddd;
