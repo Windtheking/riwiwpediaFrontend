@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Global Metadata -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/png" href="../../../public/img/logo16px.png">
+    <title>Riwipedia</title>
+
+    <!-- Style CSS-->
+    <link rel="stylesheet" href="./style.css">
+
+    <!-- GOOGLE FONTS-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+
+
+<body>
+
+    <div id="loader-wrapper">
+        <div class="loader-container">
+            <!--<div class="loader-circle"></div>-->
+            <img src="../../../public/img/logo128px.png" alt="Nube animada" class="loader-cloud">
+        </div>
+
+        <div class="loader-text">
+            <h1>Riwipedia</h1>
+            <p>One Stop Solution to your Book need</p>
+        </div>
+    </div>
+
+    <script>
+      // Espera 3 segundos y redirige a dashboard.html
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          window.location.replace('../dashboard/dashboard.html');
+        }, 3000); // 3000 ms = 3 segundos
+      });
+    </script>
+</body>
+
+</html>

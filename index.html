@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Global Metadata -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/png" href="./frontend/public/img/logo16px.png">
+    <title>Riwipedia</title>
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://Riwipedia.com/">
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="Riwipedia">
+    <meta name="description" content="Esta es tu biblioteca digital Explora, aprende y transforma tu mundo!">
+    <!-- Style CSS-->
+    <link rel="stylesheet" href="./index.css">
+
+    <!-- Auth JS-->
+     <script src="/frontend/src/utils/auth.js"></script>
+
+    <!-- GOOGLE FONTS-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <main class="main">
+        <header class="header">
+            <div class="navbar">
+                <a class="logo" href="/index.html" style="text-decoration: none;">
+                    <img src="./frontend/public/img/logo64px.png" alt="Riwipedia logo" style="width: 54px;">
+                    <h3>Riwi<span>pedia</span></h3>
+                </a>
+                <nav class="header-menu">
+                    <ul class="header-list">
+                        <li><a href="#home" class="nav-item active">Home</a></li>
+                        <li><a href="#browse" class="nav-item">Browse</a>
+                        <li><a href="#collections" class="nav-item">Collections</a></li>
+                        <li><a href="#about" class="nav-item">About</a></li>
+                    </ul>
+                </nav>
+                <button id="sign-in" class="sign-in" onclick="window.location.href='./frontend/src/pages/login/login.html'">Sign in</button>
+            </div>
+        </header>
+        <section id="home" class="section-home">
+            <div class="container-home">
+                <div class="text-decoration">
+                    <h1>Discover Knowledge Without Limits</h1>
+                    <p>Access millions of books, journals, and resources from the world's largest digital library collection.</p>
+                    <div class="buttons">
+                        <button class="b1">Start Exploring</button>
+                        <button class="b2">Learn More</button>
+                    </div>
+                </div>
+                <div class="container-img">
+                    <img src="./frontend/public/img/home.png" alt="Image of flying books">
+                </div>
+            </div>
+        </section>
+
+        <section id="browse" class="section-browse">
+            <div class="container-text">
+                <h2>Find What You're Looking For</h2>
+                <p>Search through our vast collection of books, articles, and multimedia resources</p>
+            </div>
+            <form action="/buscar" method="get" class="input-wrapper">
+                <input type="search" class="input" placeholder="Search books, author, topics...">
+                <div class="input-icon" ><img src="./frontend/public/img/search.png" alt="icon search"></div>
+            </form>
+        </section>
+
+        <section id="collections" class="section-collections">
+            <div class="collections-text">
+                <h2>Featured Collections</h2>
+                <p>Curated selections from our extensive digital archives</p>
+            </div>
+            <div class="slider-container">
+                <div id="slider-wrapper" class="slider-wrapper">
+                    <img class="books" src="./frontend/public/img/book1.png" alt="book1">
+                    <img class="books" src="./frontend/public/img/book2.png" alt="book2">
+                    <img class="books" src="./frontend/public/img/book3.png" alt="book3">
+                    <img class="books" src="./frontend/public/img/book4.png" alt="book4">
+                    <img class="books" src="./frontend/public/img/book1.png" alt="book1">
+                    <img class="books" src="./frontend/public/img/book2.png" alt="book2">
+                    <img class="books" src="./frontend/public/img/book3.png" alt="book3">
+                    <img class="books" src="./frontend/public/img/book4.png" alt="book4">
+                    
+                    <!--They are duplicated so that the carousel does not have visible jumps-->
+                    <img class="books" src="./frontend/public/img/book1.png" alt="book1">
+                    <img class="books" src="./frontend/public/img/book2.png" alt="book2">
+                    <img class="books" src="./frontend/public/img/book3.png" alt="book3">
+                    <img class="books" src="./frontend/public/img/book4.png" alt="book4">
+                    <img class="books" src="./frontend/public/img/book1.png" alt="book1">
+                    <img class="books" src="./frontend/public/img/book2.png" alt="book2">
+                    <img class="books" src="./frontend/public/img/book3.png" alt="book3">
+                    <img class="books" src="./frontend/public/img/book4.png" alt="book4">
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="section-about">
+            <div class="about-info">
+                <div class="about-text">
+                    <h2>Why Choose Riwipedia?</h2>
+                    <p>Everything you need for your research and reading journey</p>
+                </div>
+            </div>
+            <div class="container-about">
+                <div class="containers">
+                    <div class="nube-background"><img src="./frontend/public/img/nube.png" alt="icon cloud-access" style="width: 32px; height: 32px;"></div>
+                    <h3>Cloud Access</h3>
+                    <p>Access your library anywhere, anytime, on any device</p>
+                </div>
+                <div class="containers">
+                    <div class="favorito-background"><img src="./frontend/public/img/favorito.png" alt="icon bookmarks"></div>
+                    <h3>Smart Bookmarks</h3>
+                    <p>Never lose your place with intelligent bookmarking and notes</p>
+                </div>
+                <div class="containers">
+                    <div class="grupo-background"><img src="./frontend/public/img/grupo.png" alt="icon community"></div>
+                    <h3>Community</h3>
+                    <p>Join discussions and share insights with fellow readers</p>
+                </div>
+            </div>
+        </section>
+        <footer class="footer"></footer>
+    </main>
+    <script type="module" src="./index.js"></script>
+</body>
+
+</html>

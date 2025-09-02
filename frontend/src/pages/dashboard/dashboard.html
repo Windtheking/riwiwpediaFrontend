@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="icon" type="image/png" href="../../../public/img/logo16px.png">
+    <title>Dashboard - Riwipedia</title>
+
+    <!-- Import Stylesheets-->
+    <link rel="stylesheet" href="./dashboard.css" />
+    <link rel="stylesheet" href="../../utils/modals.css" />
+
+    <!--  Import Font Family -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/3e2ee07adb.js" crossorigin="anonymous"></script>
+
+    <!-- Cloudinary -->
+    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+
+</head>
+<body>
+    <aside class="side-nav">
+      <div class="navbar-header">
+        <img src="../../../public/img/logo64px.png" alt="Riwipedia Logo" />
+        <h2>Riwipedia</h2>
+      </div>
+      <nav>
+        <ul class="navbar">
+          <li>
+            <i class="fa-solid fa-house"></i>
+            <a href="#" data-section="dashboard">Dashboard</a>
+          </li>
+          <li>
+            <i class="fa-solid fa-heart"></i>
+            <a href="#" data-section="favorites">Favorites</a>
+          </li>
+          <li>
+            <i class="fa-solid fa-user"></i>
+            <a href="#" data-section="profile">Profile</a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <header>
+      <p>¡Bienvenido, <span id="user-email"></span>!</p>
+      <button class="logout" onclick="logout()">Logout</button>
+    </header>
+
+    <main>
+      <!-- Sección Dashboard -->
+      <div id="dashboard-section" class="section active">
+        <div class="indicators">
+          <div class="counter">
+            <div class="books">
+              <div class="count-info">
+                <p>Total Books</p>
+                <h2 id="total-books">0</h2>
+              </div>
+              <div class="book-image">
+                <i class="fa-solid fa-book"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="counter">
+            <div class="favorites">
+              <div class="count-info">
+                <p>Favorites</p>
+                <h2 id="total-favorites">0</h2>
+              </div>
+              <div class="favorites-image">
+                <i class="fa-solid fa-heart"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="counter">
+            <div class="downloads">
+              <div class="count-info">
+                <p>Downloads</p>
+                <h2 id="total-downloads">0</h2>
+              </div>
+              <div class="downloads-image">
+                <i class="fa-solid fa-download"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="counter">
+            <div class="categories">
+              <div class="count-info">
+                <p>Categories</p>
+                <h2 id="total-categories">0</h2>
+              </div>
+              <div class="categories-image">
+                <i class="fa-solid fa-tags"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="options">
+          <div class="filters">
+            <div class="book-name-filter">
+              <input
+                type="text"
+                id="book-search"
+                placeholder="Search books..."
+                onkeyup="filterBooks()"
+              />
+            </div>
+
+            <div class="categories-filter">
+              <select id="category-filter" onchange="filterBooks()">
+                <option value="">All Categories</option>
+                <!-- Las categorías se llenarán dinámicamente -->
+              </select>
+            </div>
+
+            <div class="sort">
+              <select id="sort-filter" onchange="filterBooks()">
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+                <option value="downloads">Most Downloaded</option>
+                <option value="title">Alphabetically</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="add-book">
+            <button class="add-book" id="open-modal-btn" style="display: none;">
+              <i class="fa-solid fa-plus"></i>
+              Add book
+            </button>
+          </div>
+        </div>
+
+        <div class="books-grid" id="books-container">
+          <!-- Los libros se cargarán aquí dinámicamente -->
+          <div class="loading">Cargando biblioteca...</div>
+        </div>
+      </div>
+
+      <!-- Sección Favorites -->
+      <div id="favorites-section" class="section">
+        <div class="section-header">
+          <h2>My Favorite Books</h2>
+        </div>
+        <div class="books-grid" id="favorites-container">
+          <div class="no-books">No tienes libros favoritos aún</div>
+        </div>
+      </div>
+
+      <!-- Sección Profile -->
+      <div id="profile-section" class="section">
+        <div class="profile-card">
+          <h2>My Profile</h2>
+          <div class="profile-info">
+            <div class="info-item">
+              <span class="label">Email:</span>
+              <span id="profile-email" class="value"></span>
+            </div>
+            <div class="info-item">
+              <span class="label">Role:</span>
+              <span id="profile-role" class="value admin-badge"></span>
+            </div>
+            <div class="info-item">
+              <span class="label">User ID:</span>
+              <span id="profile-id" class="value"></span>
+            </div>
+            <div class="info-item">
+              <span class="label">Total Downloads:</span>
+              <span id="profile-downloads" class="value">0</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Favorite Books:</span>
+              <span id="profile-favorites" class="value">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Modal para agregar libro (solo admin) -->
+    <div class="modal-overlay" id="add-book-modal">
+      <div class="modal">
+        <div class="modal-header">
+          <h2>Add New Book</h2>
+          <button class="close-btn" onclick="closeAddBookModal()">&times;</button>
+        </div>
+
+        <form id="add-book-form">
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="book-title">Book Title *</label>
+              <input
+                type="text"
+                id="book-title"
+                class="form-control"
+                placeholder="Enter book title"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="book-author">Author Name *</label>
+              <input
+                type="text"
+                id="book-author"
+                class="form-control"
+                placeholder="Enter author name"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="book-category">Category *</label>
+              <input
+                type="text"
+                id="book-category"
+                class="form-control"
+                placeholder="Enter category"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="book-language">Language *</label>
+              <select id="book-language" class="form-control" required>
+                <option value="ENG">English</option>
+                <option value="ESP">Español</option>
+                <option value="FRA">Français</option>
+                <option value="DEU">Deutsch</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="book-url">Book PDF URL *</label>
+              <input
+                type="url"
+                id="book-url"
+                class="form-control"
+                placeholder="https://example.com/book.pdf"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Book Cover</label>
+              <div class="file-input-container">
+                  <div class="file-input-label" onclick="openCloudinaryWidget()">
+                      <i class="fa-solid fa-image file-input-icon"></i>
+                      <span class="file-input-text">Click to upload book cover</span>
+                      <span class="file-name" id="cover-file-name"></span>
+                  </div>
+                  <input type="hidden" id="book-image-url" />
+              </div>
+              <div id="image-preview" style="display: none; margin-top: 10px;">
+                  <img id="preview-img" style="max-width: 100px; max-height: 100px; border-radius: 5px;">
+              </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-cancel" onclick="closeAddBookModal()">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-submit">Add Book</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="../../utils/api.js"></script>
+    <script src="../../utils/auth.js"></script>
+    <script src="../../utils/modals.js"></script>
+    <script src="./dashboard.js"></script>
+    <script src="../../utils/config.js"></script>
+  </body>
+</html>

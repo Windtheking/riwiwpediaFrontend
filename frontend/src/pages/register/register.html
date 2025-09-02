@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="icon" type="image/png" href="../../../public/img/logo16px.png" />
+  <title>Sign up - Riwipedia</title>
+
+  <!-- Import Stylesheets-->
+  <link rel="stylesheet" href="register.css" />
+
+  <!-- MODALS CSS-->
+  <link rel="stylesheet" href="../../utils/modals.css">
+
+  <!--  Import Font Family -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body>
+  <!-- Modal -->
+  <div id="modal-container" class="modal-container">
+    <div class="modal">
+      <h3 id="modal-title">Título</h3>
+      <p id="modal-message">Mensaje aquí</p>
+      <button onclick="closeModal()">Aceptar</button>
+    </div>
+  </div>
+  <header class="header">
+    <div class="logo">
+      <img src="../../../public/img/white-logo.png" alt="Riwipedia logo" style="width: 54px;">
+      <h3>Riwipedia</h3>
+    </div>
+  </header>
+  <main class="center-main">
+    <div class="main-content">
+      <div class="main-banner">
+        <h1>Create your account</h1>
+        <p>Register to access exclusive content!</p>
+      </div>
+      <div class="form-div">
+        <div class="signup-form">
+          <form id="register_form">
+            <div class="form-field">
+              <label for="username">User name</label>
+              <input type="text" id="username" placeholder="Santiago Mendoza">
+            </div>
+            <div class="form-field">
+              <label for="email">Email Address</label>
+              <input type="email" placeholder="email@example.com" id="email">
+            </div>
+            <div class="form-field">
+              <label for="password">Password</label>
+              <input type="password" placeholder="**********" id="password">
+            </div>
+            <div class="form-field">
+              <label for="confirm-password">Confirm Password</label>
+              <input type="password" placeholder="**********" id="conf_pass">
+            </div>
+            <div class="confirm-policies">
+              <input style="cursor: pointer;" type="checkbox" id="miCheckbox" name="miOpcion" value="true">
+              <label for="miCheckbox">I agree to the <span>Terms of Service</span> and<span> Privacy
+                  Policy.</span></label>
+            </div>
+            <button type="submit">Create Account</button>
+            <p class="signup-already">Are you already signed up? <a href="../login/login.html">Login Here!</a></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <p>&copy; 2025 Riwipedia. All rights reserved.</p>
+  </footer>
+  <!--Scripts-->
+  <script src="../../utils/api.js"></script>
+  <script src="../../utils/auth.js"></script>
+  <script src="../../utils/modals.js"></script>
+  <script src="./register.js"></script>
+</body>
+
+</html>

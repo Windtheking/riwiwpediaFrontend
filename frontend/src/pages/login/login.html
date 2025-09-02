@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Global Metadata -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/png" href="../../../public/img/logo16px.png">
+    <title>Sign in - Riwipedia </title>
+
+    <!-- Style CSS-->
+    <link rel="stylesheet" href="./login.css">
+    <!-- MODALS CSS-->
+    <link rel="stylesheet" href="../../utils/modals.css">
+    <!-- GOOGLE FONTS-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Modal -->
+    <div id="modal-container" class="modal-container">
+        <div class="modal">
+            <h3 id="modal-title">Título</h3>
+            <p id="modal-message">Mensaje aquí</p>
+            <button onclick="closeModal()">Aceptar</button>
+        </div>
+    </div>
+    <header class="header">
+        <div class="logo">
+            <img src="../../../public/img/white-logo.png" alt="Riwipedia logo" style="width: 54px;">
+            <h3>Riwipedia</h3>
+        </div>
+        <div class="header-signup">
+            <p>Don't have an account?</p>
+            <button class="signup" onclick="window.location.href='../register/register.html'">Sign up</button>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="main-container">
+            <section class="container-text">
+                <h1>Welcome Back</h1>
+                <p>This is your digital library. Explore, learn, and transform your world!</p>
+            </section>
+
+            <section class="login-container">
+                <form id="login-form" class="login-form">
+                    <div class="container-inputs">
+                        <label for="email">Email</label>
+                        <input type="text" id="email" name="email" placeholder="email@example.com" required>
+                    </div>
+                    <div class="container-inputs">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="**********" required>
+                    </div>
+                    <div class="confirm-policies">
+                        <input type="checkbox" id="miCheckbox" name="miOpcion" value="true">
+                        <label for="miCheckbox">Mantener sesion iniciada</label>
+                    </div>
+                    <button class="signin" type="submit">Sign In</button>
+                </form>
+            </section>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 Riwipedia. All rights reserved.</p>
+    </footer>
+    <!--Scripts-->
+    <script src="../../utils/api.js"></script>
+    <script src="../../utils/auth.js"></script>
+    <script src="../../utils/modals.js"></script>
+    <script src="./login.js"></script>
+</body>
+
+</html>

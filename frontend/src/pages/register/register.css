@@ -1,0 +1,199 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: linear-gradient(#5f698a, #191b24);
+  min-height: 100vh;
+  color: white;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+    display: flex;
+    position: fixed;
+    width: 100%;
+    height: 12vh;
+    background-color: rgba(255, 255, 255, 0);
+    z-index: 2;
+    top: 0;
+    padding: 5px 20px;
+}
+
+.logo{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 33vh;
+    gap: 0.6rem;
+} 
+
+.logo h3{
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+}
+
+.logo img {
+    pointer-events: none;
+}
+
+main.center-main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 60rem;
+  height: 30rem;
+}
+
+.main-banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-items: flex-start;
+  gap: 5rem;
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.main-banner h1 {
+  width: 350px;
+  height: 70px;
+  font-size: 45px;
+  font-weight: 700;
+}
+
+.main-banner p {
+  width: 520px;
+  height: 75px;
+  font-size: 32px;
+  font-weight: 400;
+  margin: 0px;
+}
+
+.form-div {
+  min-width: 370px;
+  min-height: 450px;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.15);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 20rem;
+}
+
+.form-field {
+  width:20rem;
+  height: 50px;
+  display: flex;
+  margin-bottom: 15px;
+  flex-direction: column;
+}
+
+label {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+input {
+  width: 320px;
+  height: 35px;
+  border-radius: 8px;
+  padding: 10px;
+  border: none; 
+  outline: none; 
+  background-color: white; 
+}
+
+
+input:focus {
+  border: 1px solid #191b24;
+  background-color: lightyellow; 
+  box-shadow: #191b24 0px 0px 5px;
+}
+
+button {
+  width: 300px;
+  height: 45px;
+  font-size: 17px;
+  color: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #432dd7;
+  background-color: #432dd7;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+}
+
+.confirm-policies {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  gap: 0.5rem;
+  margin-bottom: 10px;
+}
+
+.confirm-policies p {
+  font-size: 10px;
+}
+
+span {
+  color: #432dd7;
+}
+
+a {
+  color: #432dd7;
+  text-decoration: none;
+}
+
+.signup-already {
+  text-align: center;
+  font-size: 11px;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    border-top: #1F2937 0.5px solid;
+    font-weight: 300;
+    align-items: center;
+    height: 10vh;
+    width: 100%;
+    color: white;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+button:hover {
+    cursor: pointer;
+}
