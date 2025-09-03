@@ -54,7 +54,7 @@ aside li {
 }
 
 aside li:hover {
-  background-color: black;
+  background-color: #111827;
   border-radius: 8px;
 }
 
@@ -67,12 +67,12 @@ aside i,
 a {
   margin-left: 10px;
   margin-right: 10px;
-  color: black;
+  color: #111827;
   transition: color 0.3s ease;
 }
 
 aside a {
-  color: black;
+  color: #111827;
 }
 
 /* Dashboard header styles */
@@ -97,7 +97,7 @@ header button {
   margin-left: 30px;
   margin-right: 30px;
   width: 70px;
-  height: 35px;
+  height: 40px;
   border: transparent;
   border-radius: 8px;
   background: linear-gradient(#0319df, #068bd8);
