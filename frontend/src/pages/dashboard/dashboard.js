@@ -61,17 +61,22 @@ function setupNavigation() {
     const navLinks = document.querySelectorAll('.navbar a');
     const sections = document.querySelectorAll('.section');
     
-    navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
+    // Permitir click en todo el li, no solo en el enlace
+    const navItems = document.querySelectorAll('.navbar li');
+    navItems.forEach(item => {
+        item.addEventListener('click', function(e) {
             e.preventDefault();
-            const targetSection = this.getAttribute('data-section');
-            
+            // Quitar 'active' de todos los li
+            navItems.forEach(i => i.classList.remove('active'));
+            // Agregar 'active' al li seleccionado
+            item.classList.add('active');
+            const link = item.querySelector('a[data-section]');
+            if (!link) return;
+            const targetSection = link.getAttribute('data-section');
             // Ocultar todas las secciones
             sections.forEach(section => section.classList.remove('active'));
-            
             // Mostrar sección seleccionada
             document.getElementById(`${targetSection}-section`).classList.add('active');
-            
             // Si es favorites, cargar favoritos
             if (targetSection === 'favorites') {
                 loadFavorites();
